@@ -1,83 +1,68 @@
+# Codebook for the data from UCI HAR Dataset
 The zip file named "UCI HART Dataset" contain the following files:
 
-'train/X_train.txt': Training set.
-
-'train/y_train.txt': Training labels.
-
-'test/X_test.txt': Test set.
-
-'test/y_test.txt': Test labels.
-
-'features_info.txt': Shows information about the variables used on the feature vector.
-
-'features.txt': List of all features.
-
-'activity_labels.txt': Links the class labels with their activity name.
++ 'train/X_train.txt': Training set.
++ 'train/y_train.txt': Training labels.
++ 'test/X_test.txt': Test set.
++ 'test/y_test.txt': Test labels.
++ 'features_info.txt': Shows information about the variables used on the feature vector.
++ 'features.txt': List of all features.
++ 'activity_labels.txt': Links the class labels with their activity name.
 
 I used this and produced the following sets:
 
-activitylabels: contains the description of activities and the identifier number for those activities. Rows=6, Columns=2
++ activitylabels: contains the description of activities and the identifier number for those activities. Rows=6, Columns=2
++ features: contains the variable names of the features measured.  Rows=561   Columns=2
 
-features: contains the variable names of the features measured.  Rows=561   Columns=2
+## Training
++ trainfeat : X_train, contains all the features and measurements for training.  Rows=7352, Columns=561
++  trainactivity: y_train, contains the row identifier of activities for training, is numerical from 1-6.  Rows=7352, Columns=1
++ trainsubjects: subject_train, contains the row identifier of subjects for training, is numerical from 1-30.  Rows=7352, Columns=1
 
-trainfeat : X_train, contains all the features and measurements for training.  Rows=7352, Columns=561
+## Test
++ testfeat : X_train, contains all the features and measurements for test.  Rows=7352, Columns=561
++ testactivity: y_train, contains the row identifier of activities for test, is numerical from 1-6.  Rows=7352, Columns=1
++ testsubjects: subject_train, contains the row identifier of subjects for test, is numerical from 1-30.  Rows=7352, Columns=1
 
-trainactivity: y_train, contains the row identifier of activities for training, is numerical from 1-6.  Rows=7352, Columns=1
-
-trainsubjects: subject_train, contains the row identifier of subjects for training, is numerical from 1-30.  Rows=7352, Columns=1
-
-testfeat : X_train, contains all the features and measurements for test.  Rows=7352, Columns=561
-
-testactivity: y_train, contains the row identifier of activities for test, is numerical from 1-6.  Rows=7352, Columns=1
-
-testsubjects: subject_train, contains the row identifier of subjects for test, is numerical from 1-30.  Rows=7352, Columns=1
-
-activitylabels can be matched with the test/train activity data and features can be matched with the names of train/test feat data.
-
+Activitylabels can be matched with the test/train activity data and features can be matched with the names of train/test feat data.
 Once we have all the information loaded in our environment, we can bind the rows of the data pairing the matching test and train data:
 
-allfeat: row binding of trainfeat and testfeat.  Rows=10299, Columns=561
+## Row Binding:
 
-allactivity: row binding of trainactivity and testactivity. Rows=10299, Columns=561
++ allfeat: row binding of trainfeat and testfeat.  Rows=10299, Columns=561
++ allactivity: row binding of trainactivity and testactivity. Rows=10299, Columns=561
++ allsubjects: row binding of trainsubjects and testsubjects. Rows=10299, Columns=561
 
-allsubjects: row binding of trainsubjects and testsubjects. Rows=10299, Columns=561
-
+## Rename Variables
 I changed the names of the variables from Vn to descriptive names using:
 
 names(allfeat) <- features[,2]
 
 Rename the variables for the subjects and activity sets
 
-names(allsubjects) <- "subject"
++ names(allsubjects) <- "subject"
++ names(allactivity) <- "activity"
 
-names(allactivity) <- "activity"
+## Column Binding:
 
-complete.data: column binding of the allfeat, allactivity and allsubjects. Rows=10299, Columns=563
++ complete.data: column binding of the allfeat, allactivity and allsubjects. Rows=10299, Columns=563
++ mydata: data set that contains only the variables that have information about the mean or the standard deviation, the subject id and the activity id. Rows=10299, Columns= 88
 
-mydata: data set that contains only the variables that have information about the mean or the standard deviation, the subject id and the activity id. Rows=10299, Columns= 88
-
-
+## Clean the Variable names:
 I changed the names of the variables for features to make them more user friendly:
 According to the information found in 'features_info.txt'
 I changed:
-
-  t for Time
-  
-  f for Frequency
-  
-  -mean() for Mean
-  
-  -std() for STD
-  
-  Acc for Accelerometer
-  
-  Mag for Magnitude
-  
-  GYro for Gyroscope
++  t for Time
++  f for Frequency
++  -mean() for Mean
++  -std() for STD
++  Acc for Accelerometer
++  Mag for Magnitude
++  GYro for Gyroscope
 
 The variable names are the following:
 
-## names(mydata)
+## Names in mydata
  [1] "subject"                                          
  [2] "activity"                                         
  [3] "TimeBodyAccelerometerMean-X"                      
@@ -168,13 +153,16 @@ The variable names are the following:
 [88] "Angle(Z,GravityMean)"                             
                     
 
+
+## Independent tidydata:
+
 To generate an independent tidy data set with the average of each variable for each activity and each subject.
 
 First I have to define the measure variables, we want all but the subject and activity, which are our id variables.
 I created the vector:
-variables <- as.vector(names(mydata[,3:88])) ## contains the names of the measurement variables
++ variables <- as.vector(names(mydata[,3:88])) ## contains the names of the measurement variables
 
-meltdata: is the melted data that contains the average for each activity and each subject
-tidydata: is the data created for submission, this comes from the meltdata set.   
++ meltdata: is the melted data that contains the average for each activity and each subject
++ tidydata: is the data created for submission, this comes from the meltdata set.   
 
 
