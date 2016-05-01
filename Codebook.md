@@ -1,23 +1,35 @@
 The zip file named "UCI HART Dataset" contain the following files:
-  ## 'train/X_train.txt': Training set.
-  ## 'train/y_train.txt': Training labels.
-  ## 'test/X_test.txt': Test set.
-  ## 'test/y_test.txt': Test labels.
-  ## 'features_info.txt': Shows information about the variables used on the feature vector.
-  ## 'features.txt': List of all features.
-  ## 'activity_labels.txt': Links the class labels with their activity name.
+
+'train/X_train.txt': Training set.
+
+'train/y_train.txt': Training labels.
+
+'test/X_test.txt': Test set.
+
+'test/y_test.txt': Test labels.
+
+'features_info.txt': Shows information about the variables used on the feature vector.
+
+'features.txt': List of all features.
+
+'activity_labels.txt': Links the class labels with their activity name.
 
 I used this and produced the following sets:
 
 activitylabels: contains the description of activities and the identifier number for those activities. Rows=6, Columns=2
+
 features: contains the variable names of the features measured.  Rows=561   Columns=2
 
 trainfeat : X_train, contains all the features and measurements for training.  Rows=7352, Columns=561
+
 trainactivity: y_train, contains the row identifier of activities for training, is numerical from 1-6.  Rows=7352, Columns=1
+
 trainsubjects: subject_train, contains the row identifier of subjects for training, is numerical from 1-30.  Rows=7352, Columns=1
 
 testfeat : X_train, contains all the features and measurements for test.  Rows=7352, Columns=561
+
 testactivity: y_train, contains the row identifier of activities for test, is numerical from 1-6.  Rows=7352, Columns=1
+
 testsubjects: subject_train, contains the row identifier of subjects for test, is numerical from 1-30.  Rows=7352, Columns=1
 
 activitylabels can be matched with the test/train activity data and features can be matched with the names of train/test feat data.
@@ -25,21 +37,24 @@ activitylabels can be matched with the test/train activity data and features can
 Once we have all the information loaded in our environment, we can bind the rows of the data pairing the matching test and train data:
 
 allfeat: row binding of trainfeat and testfeat.  Rows=10299, Columns=561
+
 allactivity: row binding of trainactivity and testactivity. Rows=10299, Columns=561
+
 allsubjects: row binding of trainsubjects and testsubjects. Rows=10299, Columns=561
 
 I changed the names of the variables from Vn to descriptive names using:
-## Change the features variables for actual labels
+
 names(allfeat) <- features[,2]
 
-## Rename the variables for the subjects and activity sets
+Rename the variables for the subjects and activity sets
+
 names(allsubjects) <- "subject"
+
 names(allactivity) <- "activity"
 
 complete.data: column binding of the allfeat, allactivity and allsubjects. Rows=10299, Columns=563
 
-mydata: data set that contains only the variables that have information about the mean or the standard deviation, the subject id and the activity id.
-Rows=10299, Columns= 88
+mydata: data set that contains only the variables that have information about the mean or the standard deviation, the subject id and the activity id. Rows=10299, Columns= 88
 
 
 I changed the names of the variables for features to make them more user friendly:
@@ -47,11 +62,17 @@ According to the information found in 'features_info.txt'
 I changed:
 
   t for Time
+  
   f for Frequency
+  
   -mean() for Mean
+  
   -std() for STD
+  
   Acc for Accelerometer
+  
   Mag for Magnitude
+  
   GYro for Gyroscope
 
 The variable names are the following:
